@@ -1,28 +1,28 @@
 export function insercion(A: number[]): number[] {
 
-    // Recorremos el arreglo desde el segundo dato
-    for (let i = 1; i < A.length; i++) {
+    // N guarda el tamaño del arreglo
+    const N = A.length;
 
-        // Guardamos el valor actual
-        let actual = A[i];
+    // Repetir con I desde 1 hasta N
+    for (let I = 1; I < N; I++) {
 
-        // Variable para comparar posiciones anteriores
-        let j = i - 1;
+        let AUX = A[I];
+        let K = I - 1;
 
-        // Movemos elementos mayores hacia la derecha
-        while (j >= 0 && A[j] > actual) {
+        // Mientras (K >= 0) y (AUX < A[K])
+        while (K >= 0 && AUX < A[K]) {
 
-            // Desplazamos el elemento
-            A[j + 1] = A[j];
+            // Hacer A[K + 1] ← A[K]
+            A[K + 1] = A[K];
 
-            // Retrocedemos una posición
-            j--;
+            // K ← K - 1
+            K = K - 1;
         }
 
-        // Insertamos el valor en su posición correcta
-        A[j + 1] = actual;
+        // Hacer A[K + 1] ← AUX
+        A[K + 1] = AUX;
     }
 
-    // Regresamos el arreglo ordenado
+    // Regresael arreglo ordenado
     return A;
 }
