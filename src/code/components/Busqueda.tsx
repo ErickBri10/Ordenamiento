@@ -1,7 +1,13 @@
 import { useState } from 'react'
 
 // Componente principal de búsqueda
-function Busqueda({ onVolver }: { onVolver: () => void }) {
+function Busqueda({
+  onVolver,
+  temaOscuro
+}: {
+  onVolver: () => void
+  temaOscuro: boolean
+}) {
 
   // Guarda el método seleccionado
   const [metodo, setMetodo] = useState<string | null>(null)
@@ -24,76 +30,57 @@ function Busqueda({ onVolver }: { onVolver: () => void }) {
   // Función principal para realizar la búsqueda
   function buscar() {
 
-    // Convierte el texto en arreglo numérico
     const arreglo = input.split(",").map(Number)
 
-    // Convierte el número buscado
     const objetivo = Number(numero)
 
-    // ---------------- BÚSQUEDA LINEAL ----------------
+    // BÚSQUEDA LINEAL
     if (metodo === "Búsqueda Lineal") {
 
-      // Busca la posición usando indexOf
       const posicion = arreglo.indexOf(objetivo)
 
-      // Verifica si el número existe
       if (posicion !== -1) {
 
-        // Muestra posición encontrada
         setResultado(`Número encontrado en la posición ${posicion}`)
 
       } else {
 
-        // Si no existe muestra mensaje
         setResultado("Número no encontrado")
       }
     }
 
-    // ---------------- BÚSQUEDA BINARIA ----------------
+    // BÚSQUEDA BINARIA
     if (metodo === "Búsqueda Binaria") {
 
-      // Ordena el arreglo de menor a mayor
       const ordenado = [...arreglo].sort((a, b) => a - b)
 
-      // Variables para inicio y fin
       let inicio = 0
       let fin = ordenado.length - 1
 
-      // Variable para verificar si se encontró
       let encontrado = false
 
-      // Ciclo principal de búsqueda binaria
       while (inicio <= fin) {
 
-        // Obtiene la mitad del arreglo
         const medio = Math.floor((inicio + fin) / 2)
 
-        // Verifica si encontró el número
         if (ordenado[medio] === objetivo) {
 
-          // Muestra posición encontrada
           setResultado(`Número encontrado en la posición ${medio}`)
 
           encontrado = true
-
-          // Termina el ciclo
           break
         }
 
-        // Si el valor central es menor
-        // busca en la parte derecha
         if (ordenado[medio] < objetivo) {
 
           inicio = medio + 1
 
         } else {
 
-          // Busca en la parte izquierda
           fin = medio - 1
         }
       }
 
-      // Si no se encontró el número
       if (!encontrado) {
         setResultado("Número no encontrado")
       }
@@ -102,49 +89,44 @@ function Busqueda({ onVolver }: { onVolver: () => void }) {
 
   return (
 
-    // Contenedor principal
     <div
       style={{
-
-        // Altura mínima de pantalla
         minHeight: '100vh',
 
-        // Centrado de contenido
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
 
-        // Imagen de fondo
         backgroundImage: 'url("/fondo.jpg")',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
 
-        // Oscurece el fondo
-        backgroundColor: 'rgba(0,0,0,0.55)',
-        backgroundBlendMode: 'darken',
+        backgroundColor: temaOscuro
+          ? 'rgba(0,0,0,0.55)'
+          : 'rgba(255,255,255,0.30)',
 
-        // Fuente principal
+        backgroundBlendMode: temaOscuro
+          ? 'darken'
+          : 'lighten',
+
         fontFamily: 'Poppins, sans-serif',
 
         padding: '20px'
       }}
     >
 
-      {/* Tarjeta principal */}
       <div
         style={{
-
-          // Fondo transparente
-          background: 'rgba(255,255,255,0.08)',
+          background: temaOscuro
+            ? 'rgba(255,255,255,0.08)'
+            : 'rgba(255,255,255,0.92)',
 
           padding: '40px',
           borderRadius: '20px',
 
-          // Efecto blur
           backdropFilter: 'blur(10px)',
 
-          // Sombra
           boxShadow: '0 10px 40px rgba(0,0,0,0.45)',
 
           width: '420px',
@@ -152,10 +134,12 @@ function Busqueda({ onVolver }: { onVolver: () => void }) {
         }}
       >
 
-        {/* Título */}
         <h2
           style={{
-            color: 'white',
+            color: temaOscuro
+              ? 'white'
+              : '#0f172a',
+
             marginBottom: '25px',
             fontSize: '32px'
           }}
@@ -163,7 +147,6 @@ function Busqueda({ onVolver }: { onVolver: () => void }) {
           Búsqueda
         </h2>
 
-        {/* Botones de métodos */}
         <div
           style={{
             display: 'grid',
@@ -172,13 +155,11 @@ function Busqueda({ onVolver }: { onVolver: () => void }) {
           }}
         >
 
-          {/* Recorre todos los métodos */}
           {metodos.map((m) => (
 
             <button
               key={m}
 
-              // Selecciona el método
               onClick={() => setMetodo(m)}
 
               style={{
@@ -186,10 +167,16 @@ function Busqueda({ onVolver }: { onVolver: () => void }) {
                 border: 'none',
                 borderRadius: '12px',
 
-                // Cambia color si está seleccionado
-                background: metodo === m ? '#2563eb' : '#1e293b',
+                background: metodo === m
+                  ? '#2563eb'
+                  : temaOscuro
+                    ? '#1e293b'
+                    : '#cbd5e1',
 
-                color: 'white',
+                color: temaOscuro
+                  ? 'white'
+                  : '#0f172a',
+
                 cursor: 'pointer',
                 fontSize: '15px'
               }}
@@ -199,26 +186,26 @@ function Busqueda({ onVolver }: { onVolver: () => void }) {
           ))}
         </div>
 
-        {/* Si hay método seleccionado */}
         {metodo && (
           <>
             <h3
               style={{
-                color: '#cbd5e1',
+                color: temaOscuro
+                  ? '#cbd5e1'
+                  : '#334155',
+
                 marginBottom: '15px'
               }}
             >
               Método seleccionado: {metodo}
             </h3>
 
-            {/* Input del arreglo */}
             <input
               type="text"
               placeholder="Ejemplo: 5,8,2,1,9,7"
 
               value={input}
 
-              // Guarda datos escritos
               onChange={(e) => setInput(e.target.value)}
 
               style={{
@@ -227,21 +214,26 @@ function Busqueda({ onVolver }: { onVolver: () => void }) {
                 borderRadius: '12px',
                 border: 'none',
                 marginBottom: '15px',
-                background: '#1e293b',
-                color: 'white',
+
+                background: temaOscuro
+                  ? '#1e293b'
+                  : '#e2e8f0',
+
+                color: temaOscuro
+                  ? 'white'
+                  : '#0f172a',
+
                 fontSize: '15px',
                 boxSizing: 'border-box'
               }}
             />
 
-            {/* Input del número a buscar */}
             <input
               type="number"
               placeholder="Número a buscar"
 
               value={numero}
 
-              // Guarda número escrito
               onChange={(e) => setNumero(e.target.value)}
 
               style={{
@@ -250,14 +242,20 @@ function Busqueda({ onVolver }: { onVolver: () => void }) {
                 borderRadius: '12px',
                 border: 'none',
                 marginBottom: '20px',
-                background: '#1e293b',
-                color: 'white',
+
+                background: temaOscuro
+                  ? '#1e293b'
+                  : '#e2e8f0',
+
+                color: temaOscuro
+                  ? 'white'
+                  : '#0f172a',
+
                 fontSize: '15px',
                 boxSizing: 'border-box'
               }}
             />
 
-            {/* Botón buscar */}
             <button
               onClick={buscar}
 
@@ -278,11 +276,13 @@ function Busqueda({ onVolver }: { onVolver: () => void }) {
           </>
         )}
 
-        {/* Resultado */}
         {resultado && (
           <div
             style={{
-              background: '#0f172a',
+              background: temaOscuro
+                ? '#0f172a'
+                : '#e2e8f0',
+
               padding: '15px',
               borderRadius: '12px',
               marginBottom: '20px'
@@ -290,7 +290,10 @@ function Busqueda({ onVolver }: { onVolver: () => void }) {
           >
             <p
               style={{
-                color: '#38bdf8',
+                color: temaOscuro
+                  ? '#38bdf8'
+                  : '#0369a1',
+
                 margin: 0
               }}
             >
@@ -299,7 +302,6 @@ function Busqueda({ onVolver }: { onVolver: () => void }) {
           </div>
         )}
 
-        {/* Botón volver */}
         <button
           onClick={onVolver}
 

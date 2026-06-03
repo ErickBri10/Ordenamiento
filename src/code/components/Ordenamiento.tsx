@@ -9,7 +9,13 @@ import { quickSort } from '../ordenamiento/quickSort'
 import { mergeSort } from '../ordenamiento/mergeSort'
 
 // Componente principal de ordenamiento
-function Ordenamiento({ onVolver }: { onVolver: () => void }) {
+function Ordenamiento({
+  onVolver,
+  temaOscuro
+}: {
+  onVolver: () => void
+  temaOscuro: boolean
+}) {
 
   // Guarda el método seleccionado
   const [metodo, setMetodo] = useState<string | null>(null)
@@ -64,49 +70,45 @@ function Ordenamiento({ onVolver }: { onVolver: () => void }) {
 
   return (
 
-    // Contenedor principal
     <div
       style={{
-
-        // Altura mínima de pantalla
         minHeight: '100vh',
 
-        // Centrado del contenido
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
 
-        // Imagen de fondo
         backgroundImage: 'url("/fondo.jpg")',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
 
-        // Oscurece un poco el fondo
-        backgroundColor: 'rgba(0,0,0,0.55)',
-        backgroundBlendMode: 'darken',
+        backgroundColor: temaOscuro
+          ? 'rgba(0,0,0,0.55)'
+          : 'rgba(255,255,255,0.30)',
 
-        // Fuente principal
+        backgroundBlendMode: temaOscuro
+          ? 'darken'
+          : 'lighten',
+
         fontFamily: 'Arial',
 
         padding: '20px'
       }}
     >
 
-      {/* Tarjeta principal */}
       <div
         style={{
 
-          // Fondo transparente
-          background: 'rgba(255,255,255,0.08)',
+          background: temaOscuro
+            ? 'rgba(255,255,255,0.08)'
+            : 'rgba(255,255,255,0.92)',
 
           padding: '40px',
           borderRadius: '20px',
 
-          // Efecto blur
           backdropFilter: 'blur(10px)',
 
-          // Sombra de la tarjeta
           boxShadow: '0 8px 32px rgba(0,0,0,0.3)',
 
           width: '450px',
@@ -114,10 +116,12 @@ function Ordenamiento({ onVolver }: { onVolver: () => void }) {
         }}
       >
 
-        {/* Título */}
         <h2
           style={{
-            color: 'white',
+            color: temaOscuro
+              ? 'white'
+              : '#0f172a',
+
             marginBottom: '25px',
             fontSize: '32px'
           }}
@@ -125,7 +129,6 @@ function Ordenamiento({ onVolver }: { onVolver: () => void }) {
           Ordenamiento
         </h2>
 
-        {/* Botones de métodos */}
         <div
           style={{
             display: 'grid',
@@ -134,13 +137,11 @@ function Ordenamiento({ onVolver }: { onVolver: () => void }) {
           }}
         >
 
-          {/* Recorre todos los métodos */}
           {metodos.map((m) => (
 
             <button
               key={m}
 
-              // Selecciona el método
               onClick={() => setMetodo(m)}
 
               style={{
@@ -150,10 +151,16 @@ function Ordenamiento({ onVolver }: { onVolver: () => void }) {
                 border: 'none',
                 borderRadius: '12px',
 
-                // Cambia color si está seleccionado
-                background: metodo === m ? '#2563eb' : '#1e293b',
+                background: metodo === m
+                  ? '#2563eb'
+                  : temaOscuro
+                    ? '#1e293b'
+                    : '#cbd5e1',
 
-                color: 'white',
+                color: temaOscuro
+                  ? 'white'
+                  : '#0f172a',
+
                 cursor: 'pointer',
 
                 fontSize: '15px',
@@ -165,21 +172,21 @@ function Ordenamiento({ onVolver }: { onVolver: () => void }) {
           ))}
         </div>
 
-        {/* Si hay método seleccionado */}
         {metodo && (
           <>
 
-            {/* Muestra el método actual */}
             <h3
               style={{
-                color: '#cbd5e1',
+                color: temaOscuro
+                  ? '#cbd5e1'
+                  : '#334155',
+
                 marginBottom: '15px'
               }}
             >
               Método seleccionado: {metodo}
             </h3>
 
-            {/* Input para escribir números */}
             <input
               type="text"
 
@@ -187,7 +194,6 @@ function Ordenamiento({ onVolver }: { onVolver: () => void }) {
 
               value={input}
 
-              // Guarda lo escrito
               onChange={(e) => setInput(e.target.value)}
 
               style={{
@@ -200,15 +206,19 @@ function Ordenamiento({ onVolver }: { onVolver: () => void }) {
 
                 marginBottom: '15px',
 
-                background: '#1e293b',
-                color: 'white',
+                background: temaOscuro
+                  ? '#1e293b'
+                  : '#e2e8f0',
+
+                color: temaOscuro
+                  ? 'white'
+                  : '#0f172a',
 
                 fontSize: '15px',
                 boxSizing: 'border-box'
               }}
             />
 
-            {/* Botón ordenar */}
             <button
               onClick={ordenar}
 
@@ -233,21 +243,25 @@ function Ordenamiento({ onVolver }: { onVolver: () => void }) {
           </>
         )}
 
-        {/* Resultado del algoritmo */}
         {resultado.length > 0 && (
           <div
             style={{
-              background: '#0f172a',
+              background: temaOscuro
+                ? '#0f172a'
+                : '#e2e8f0',
+
               padding: '15px',
               borderRadius: '12px',
               marginBottom: '20px'
             }}
           >
 
-            {/* Texto resultado */}
             <p
               style={{
-                color: '#f8fafc',
+                color: temaOscuro
+                  ? '#f8fafc'
+                  : '#0f172a',
+
                 margin: 0,
                 fontSize: '16px'
               }}
@@ -255,7 +269,6 @@ function Ordenamiento({ onVolver }: { onVolver: () => void }) {
               Resultado:
             </p>
 
-            {/* Arreglo ordenado */}
             <p
               style={{
                 color: '#38bdf8',
@@ -268,7 +281,6 @@ function Ordenamiento({ onVolver }: { onVolver: () => void }) {
           </div>
         )}
 
-        {/* Botón volver */}
         <button
           onClick={onVolver}
 

@@ -10,66 +10,71 @@ import {
   FaSortAmountDown
 } from "react-icons/fa"
 
-function Menu() {
+function Menu({ temaOscuro }: { temaOscuro: boolean }) {
 
   // Estado para controlar la sección activa
   const [seccion, setSeccion] = useState<string | null>(null)
 
   // Si el usuario entra a ordenamiento
-  // se renderiza el componente Ordenamiento
   if (seccion === 'ordenamiento') {
-    return <Ordenamiento onVolver={() => setSeccion(null)} />
+    return (
+      <Ordenamiento
+        temaOscuro={temaOscuro}
+        onVolver={() => setSeccion(null)}
+      />
+    )
   }
 
   // Si el usuario entra a búsqueda
-  // se renderiza el componente Busqueda
   if (seccion === 'busqueda') {
-    return <Busqueda onVolver={() => setSeccion(null)} />
+    return (
+      <Busqueda
+        temaOscuro={temaOscuro}
+        onVolver={() => setSeccion(null)}
+      />
+    )
   }
 
   return (
 
-    // Contenedor principal
     <div
       style={{
 
-        // Altura completa de la pantalla
         height: '100vh',
 
-        // Centrado horizontal y vertical
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
 
-        // Imagen de fondo
         backgroundImage: 'url("/fondo.jpg")',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
 
-        // Oscurece ligeramente la imagen
-        backgroundColor: 'rgba(0,0,0,0.5)',
-        backgroundBlendMode: 'darken',
+        backgroundColor: temaOscuro
+          ? 'rgba(0,0,0,0.5)'
+          : 'rgba(255,255,255,0.30)',
 
-        // Fuente principal
+        backgroundBlendMode: temaOscuro
+          ? 'darken'
+          : 'lighten',
+
         fontFamily: 'Poppins, sans-serif',
       }}
     >
 
-      {/* Tarjeta principal */}
       <div
         style={{
 
-          // Fondo transparente tipo glassmorphism
-          background: 'rgba(255,255,255,0.08)',
+          background: temaOscuro
+            ? 'rgba(255,255,255,0.08)'
+            : 'rgba(255,255,255,0.92)',
 
           padding: '40px',
           borderRadius: '20px',
 
-          // Efecto blur
           backdropFilter: 'blur(10px)',
 
-          // Sombra de la tarjeta
           boxShadow: '0 10px 40px rgba(0,0,0,0.45)',
 
           textAlign: 'center',
@@ -77,10 +82,12 @@ function Menu() {
         }}
       >
 
-        {/* Título principal */}
         <h1
           style={{
-            color: 'white',
+            color: temaOscuro
+              ? 'white'
+              : '#0f172a',
+
             marginBottom: '30px',
             fontSize: '32px',
           }}
@@ -88,18 +95,15 @@ function Menu() {
           Proyecto de Algoritmos
         </h1>
 
-        {/* Botón para sección ordenamiento */}
+        {/* Botón Ordenamiento */}
         <button
 
-          // Cambia la sección al hacer clic
           onClick={() => setSeccion('ordenamiento')}
 
-          // Efecto hover al pasar el mouse
           onMouseEnter={(e) => {
             e.currentTarget.style.transform = 'scale(1.03)'
           }}
 
-          // Regresa el tamaño normal
           onMouseLeave={(e) => {
             e.currentTarget.style.transform = 'scale(1)'
           }}
@@ -121,7 +125,6 @@ function Menu() {
 
             transition: '0.3s',
 
-            // Alinea icono y texto
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -129,24 +132,21 @@ function Menu() {
           }}
         >
 
-          {/* Icono */}
           <FaSortAmountDown />
 
           Ordenamiento
+
         </button>
 
-        {/* Botón para sección búsqueda */}
+        {/* Botón Búsqueda */}
         <button
 
-          // Cambia a la sección búsqueda
           onClick={() => setSeccion('busqueda')}
 
-          // Animación 
           onMouseEnter={(e) => {
             e.currentTarget.style.transform = 'scale(1.03)'
           }}
 
-          // Regresa tamaño normal
           onMouseLeave={(e) => {
             e.currentTarget.style.transform = 'scale(1)'
           }}
@@ -167,7 +167,6 @@ function Menu() {
 
             transition: '0.3s',
 
-            // Alineación de icono y texto
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -175,10 +174,10 @@ function Menu() {
           }}
         >
 
-          {/* Icono */}
           <FaSearch />
 
           Búsqueda
+
         </button>
 
       </div>
